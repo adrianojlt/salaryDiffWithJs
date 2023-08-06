@@ -1,0 +1,13 @@
+.firstCol {
+    background: #ecfdff;
+}
+
+.tirthCol {
+    background: #ecffec;
+}
+
+.fixed-width-badge {
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+}
