@@ -33,29 +33,29 @@
                     <div class="row g-3">
                         <div class="col-md-12 col-lg-6">
                             <label for="name" class="form-label">Situação</label>
-                            <select type="text" class="form-control" id="situation01" placeholder="Page Name" required="">
-                                <option>Não Casado</option>
-                                <option>Casado, 1 titular</option>
-                                <option>Casado, 2 titulares</option>
+                            <select id="situation01" type="text" class="form-control" placeholder="Page Name" required="">
+                                <option value="0">Não Casado</option>
+                                <option value="1">Casado, 1 titular</option>
+                                <option value="2">Casado, 2 titulares</option>
                             </select>
                         </div>
                         <div class="col-md-12 col-lg-6 secondCol">
                             <label for="description" class="form-label">N de Dependentes</label>
-                            <select type="text" class="form-control" id="dependents01" placeholder="Page Name" required="">
-                                <option>0</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 ou mais</option>
+                            <select id="dependents01" type="text" class="form-control" placeholder="Page Name" required="">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5 ou mais</option>
                             </select>
                         </div>
                         <div class="col-12">
                             <row>
                                 <label for="description" class="form-label">Vencimento Base: </label> 
-                                <input class="form-control" type="text" id="salaryvalue_left" value="900" />
+                                <input class="form-control" type="text" id="salaryInputLeft" value="900" />
                             </row>
-                            <input class="form-range" type="range" id="salarayrange_left" value="900" step="20" min="760" max="10000">
+                            <input id="salaryRangeLeft" class="form-range" type="range" value="900" step="20" min="760" max="10000">
                         </div>
                     </div>
                 </form>
@@ -66,11 +66,11 @@
             
                 <div class="row">
                     <div class="col text-center">
-                        <span class="badge bg-primary fs-2 fixed-width-badge">2990</span>
+                        <span id="salaryLeft" class="badge bg-primary fs-2 fixed-width-badge">2990</span>
                         <div class="my-2"></div>
-                        <span class="badge bg-success fs-2 fixed-width-badge">2000</span>
+                        <span id="salaryRight" class="badge bg-success fs-2 fixed-width-badge">2000</span>
                         <div class="my-2"></div>
-                        <span class="badge bg-secondary fs-2 fixed-width-badge">990</span>
+                        <span id="salaryDiff" class="badge bg-secondary fs-2 fixed-width-badge">990</span>
                     </div>
                 </div>
             
@@ -81,29 +81,29 @@
                     <div class="row g-3">
                         <div class="col-md-12 col-lg-6">
                             <label for="name" class="form-label">Situação</label>
-                            <select type="text" class="form-control" id="situation" placeholder="Page Name" required="">
-                                <option>Não Casado</option>
-                                <option>Casado, 1 titular</option>
-                                <option>Casado, 2 titulares</option>
+                            <select id="situation02" type="text" class="form-control" placeholder="Page Name" required="">
+                                <option value="0">Não Casado</option>
+                                <option value="1">Casado, 1 titular</option>
+                                <option value="2">Casado, 2 titulares</option>
                             </select>
                         </div>
                         <div class="col-md-12 col-lg-6">
                             <label for="description" class="form-label">N de Dependentes</label>
-                            <select type="text" class="form-control" id="dependents" placeholder="Page Name" required="">
-                                <option>0</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 ou mais</option>
+                            <select id="dependents02" type="text" class="form-control" placeholder="Page Name" required="">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5 ou mais</option>
                             </select>
                         </div>
                         <div class="col-12">
                             <row>
-                            <label for="description" class="form-label">Vencimento Base: </label> 
-                            <input class="form-control" type="text" id="salaryvalue_right" value="900" />
+                                <label for="description" class="form-label">Vencimento Base: </label> 
+                                <input id="salaryInputRight" class="form-control" type="text"  value="900" />
                             </row>
-                            <input class="form-range" type="range" id="salarayrange_right" value="900" step="20" min="760" max="10000">
+                            <input id="salaryRangeRight" class="form-range" type="range" value="900" step="5" min="760" max="7000">
                         </div>
                     </div>
                 </form>
@@ -117,6 +117,8 @@
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
     <script src="script.js" asp-append-version="true"></script>
 
