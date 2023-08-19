@@ -12,7 +12,7 @@ const Tipo = {
   CAS1D: "CAS1D",       // Casado 1 Titular, com 1 ou mais Dependentes
 }
 
-function getLeftType(position) {
+function getType(position) {
 
   var situacao; 
   var dependentes;
@@ -59,40 +59,32 @@ function addSalaryInputListeners(input, range) {
     });
 }
 
-function addLeftListeners() {
-
-}
-
-function addRightListeners() {
-
-}
-
 function addListeners() {
 
   addSalaryInputListeners(salaryInputLeft, salaryRangeLeft);
   addSalaryInputListeners(salaryInputRight, salaryRangeRight);
 
-  dependentsLeft.addEventListener('change', function(val) {
+  dependentsLeft.addEventListener('change', function() {
     calculation('left');
   });
 
-  dependentsRight.addEventListener('change', function(val) {
+  dependentsRight.addEventListener('change', function() {
     calculation('right');
   });
 
-  situationLeft.addEventListener('change', function(val) {
+  situationLeft.addEventListener('change', function() {
     calculation('left');
   });
 
-  situationRight.addEventListener('change', function(val) {
+  situationRight.addEventListener('change', function() {
     calculation('right');
   });
 
-  salaryInputLeft.addEventListener('change', function(val) {
+  salaryInputLeft.addEventListener('change', function() {
     calculation('left');
   });
 
-  salaryInputRight.addEventListener('change', function(val) {
+  salaryInputRight.addEventListener('change', function() {
     calculation('right');
   });
 
@@ -125,7 +117,7 @@ function calculation(position) {
       salaryLabel = salaryRight;
     }
 
-    var type = getLeftType(position);
+    var type = getType(position);
 
     var values = csvJson.filter(x => x.tipo === type && parseFloat(salaryInput.value) < parseFloat(x.limite.replace(',','.')));
 
@@ -200,5 +192,3 @@ var salaryRight = document.getElementById('salaryRight');
 var salaryDiff = document.getElementById('salaryDiff');
 
 addListeners();
-
-
