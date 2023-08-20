@@ -88,6 +88,12 @@ function addSalaryInputListeners(input, range) {
     });
 }
 
+function copyValues(s1,d1,v1,s2,d2,v2) {
+  s2.value = s1.value;
+  d2.value = d1.value;
+  v2.value = v1.value;
+};
+
 function addListeners() {
 
   addSalaryInputListeners(salaryInputLeft, salaryRangeLeft);
@@ -125,6 +131,41 @@ function addListeners() {
   salaryRangeRight.addEventListener('input', function(val) {
     salaryRight.innerHTML = val.target.value;
     calculation('right');
+  });
+
+  salaryLeft.addEventListener('dblclick', function() {
+  });
+
+  salaryRight.addEventListener('dblclick', function() {
+  });
+
+  let lastTapTime = 0;
+
+  // Listener to work also in mobile
+  salaryLeft.addEventListener('click', function() {
+    const currentTime = new Date().getTime();
+    const timeSinceLastTap = currentTime - lastTapTime;
+    
+    if (timeSinceLastTap < 300) { // Adjust the threshold as needed
+      copyValues(situationLeft, dependentsLeft, salaryInputLeft, situationRight, dependentsRight, salaryInputRight);
+      salaryInputRight.dispatchEvent(new Event('change'));
+      console.log('Double tap or double touch');
+    }
+    
+    lastTapTime = currentTime;
+  });
+
+  // Listener to work also in mobile
+  salaryRight.addEventListener('click', function() {
+    const currentTime = new Date().getTime();
+    const timeSinceLastTap = currentTime - lastTapTime;
+    
+    if (timeSinceLastTap < 300) { // Adjust the threshold as needed
+      copyValues(situationRight, dependentsRight, salaryInputRight, situationLeft, dependentsLeft, salaryInputLeft);
+      salaryInputLeft.dispatchEvent(new Event('change'));
+    }
+    
+    lastTapTime = currentTime;
   });
 }
 
