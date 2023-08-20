@@ -1,50 +1,72 @@
-const Situacao = {
-  Solteiro: '0',
-  Casado1: '1',
-  Casado2: '2'
+const DefaultSalaryValue = 900;
+
+const Situation = {
+  NotMarried: '0',
+  MarriedOneTitular: '1',
+  MarriedTwoTitulares: '2'
 }
 
-const Tipo = {
-  SOLD: "SOLD",         // Nao Casado, com 1 ou mais Dependentes
-  SOLCAS2: "SOLCAS2",   // Nao Casado OU Casado 2 titulares sem Dependentes
-  CAS2D: "CAS2D",       // Casado 2 Titulares, com 1 ou mais Dependentes 
-  CAS1: "CAS1",         // Casado 1 Titular, sem Dependentes
-  CAS1D: "CAS1D",       // Casado 1 Titular, com 1 ou mais Dependentes
+const Type = {
+  SOLD: {
+    value: "SOLD" , 
+    logic: notMarriedWithOneOrMoreDependents = (situation, dependentes) =>  
+    situation == Situation.NotMarried && dependentes >= 1 
+  },
+  SOLCAS2: {
+    value: "SOLCAS2",
+    logic: notMarriedOrMarriedTwoTitularesWithoutDependents = (situation, dependentes) =>
+      (situation == Situation.NotMarried || situation == Situation.MarriedTwoTitulares) && dependentes == 0
+  },
+  CAS2D: {
+    value: "CAS2D",
+    logic: marriedTwoTitularesWithOneOrMoreDependents = (situation, dependentes) =>
+    situation == Situation.MarriedTwoTitulares && dependentes >= 1
+  },
+  CAS1: {
+    value: "CAS1",
+    logic: marriedTwoTitularesWithoutDependents = (situation, dependentes) =>
+    situation == Situation.MarriedOneTitular && dependentes == 0
+  },
+  CAS1D: {
+    value: "CAS1D",
+    logic: marriedOneTitularWithOneOrMoreDependents = (situation, dependentes) =>
+    situation == Situation.MarriedOneTitular && dependentes >= 1
+  }
 }
 
 function getType(position) {
 
-  var situacao; 
-  var dependentes;
+  var situation; 
+  var dependents;
 
   if (position == 'left') {
-     situacao = situationLeft.value; 
-     dependentes = parseInt(dependentsLeft.value);
+    situation = situationLeft.value; 
+     dependents = parseInt(dependentsLeft.value);
   }
 
   if (position == 'right') {
-    situacao = situationRight.value;
-    dependentes = parseInt(dependentsRight.value);
+    situation = situationRight.value;
+    dependents = parseInt(dependentsRight.value);
   }
 
-  if (situacao == Situacao.Solteiro && dependentes >= 1) {
-    return Tipo.SOLD;
+  if (Type.SOLD.logic(situation, dependents)) {
+    return Type.SOLD.value;
   }
 
-  if ( (situacao == Situacao.Solteiro || situacao == Situacao.Casado2) && dependentes == 0 ) {
-    return Tipo.SOLCAS2;
+  if (Type.SOLCAS2.logic(situation, dependents)) {
+    return Type.SOLCAS2.value;
   }
 
-  if (situacao == Situacao.Casado2 && dependentes >= 1) {
-    return Tipo.CAS2D;
+  if (Type.CAS2D.logic(situation, dependents)) {
+    return Type.CAS2D.value;
   }
 
-  if (situacao == Situacao.Casado1 && dependentes == 0) {
-    return Tipo.CAS1;
+  if (Type.CAS1.logic(situation, dependents)) {
+    return Type.CAS1.value;
   }
 
-  if (situacao == Situacao.Casado1 && dependentes >= 1) {
-    return Tipo.CAS1D;
+  if (Type.CAS1D.logic(situation, dependents)) {
+    return Type.CAS1D.value;
   }
 }
 
@@ -55,6 +77,13 @@ function addSalaryInputListeners(input, range) {
     });
 
     input.addEventListener('change', function(val) {
+
+        const numsOnly = /^[0-9]*$/;
+
+        if (!numsOnly.test(val.target.value)) {
+          input.value = DefaultSalaryValue;
+        }
+
         range.value = val.target.value;
     });
 }
@@ -107,19 +136,30 @@ function calculation(position) {
 
     if (position == 'left') {
       salaryInput = salaryInputLeft;
+      rangeSalary = salaryRangeLeft;
       dependents = dependentsLeft;
       salaryLabel = salaryLeft;
     }
 
     if (position == 'right') {
       salaryInput = salaryInputRight;
+      rangeSalary = salaryRangeRight;
       dependents = dependentsRight;
       salaryLabel = salaryRight;
     }
 
     var type = getType(position);
 
-    var values = csvJson.filter(x => x.tipo === type && parseFloat(salaryInput.value) < parseFloat(x.limite.replace(',','.')));
+    var inMaxRange = (x) => parseFloat(salaryInput.value) <  parseFloat(x.limite.replace(',','.')) && x.sinal == 'max';
+    var inMinRange = (x) => parseFloat(salaryInput.value) >= parseFloat(x.limite.replace(',','.')) && x.sinal == 'min';
+
+    var values = csvJson.filter(x => x.tipo === type && (inMaxRange(x) || inMinRange(x)));
+
+    if (!values[0]) {
+      salaryInput.value = DefaultSalaryValue;
+      rangeSalary.value = DefaultSalaryValue;
+      return; 
+    }
 
     values = values[0];
 
