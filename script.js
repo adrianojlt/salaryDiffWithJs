@@ -149,7 +149,6 @@ function addListeners() {
     if (timeSinceLastTap < 300) { // Adjust the threshold as needed
       copyValues(situationLeft, dependentsLeft, salaryInputLeft, situationRight, dependentsRight, salaryInputRight);
       salaryInputRight.dispatchEvent(new Event('change'));
-      console.log('Double tap or double touch');
     }
     
     lastTapTime = currentTime;
@@ -219,7 +218,8 @@ function calculation(position) {
 
     salaryLabel.innerHTML = parseFloat(total).toFixed(2);
 
-    salaryDiff.innerHTML = Math.abs(parseFloat(salaryLeft.innerHTML) - parseFloat(salaryRight.innerHTML)).toFixed(2) 
+    salaryDiff.innerHTML = Math.abs(parseFloat(salaryInputLeft.value) - parseFloat(salaryInputRight.value)).toFixed(2);
+    salaryNetDiff.innerHTML = Math.abs(parseFloat(salaryLeft.innerHTML) - parseFloat(salaryRight.innerHTML)).toFixed(2) 
 }
 
 function init() {
@@ -270,6 +270,7 @@ var situationRight = document.getElementById('situation02');
 var dependentsRight = document.getElementById('dependents02');
 var salaryRight = document.getElementById('salaryRight');
 
+var salaryNetDiff = document.getElementById('salaryNetDiff');
 var salaryDiff = document.getElementById('salaryDiff');
 
 addListeners();

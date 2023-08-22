@@ -23,7 +23,7 @@
 
         <div class="py-4 text-center">
             <!--<img class="d-block mx-auto mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
-            <h2>Salary</h2>
+            <h2>Calculo Salário</h2>
         </div>
 
         <div class="row">
@@ -40,7 +40,7 @@
                             </select>
                         </div>
                         <div class="col-md-12 col-lg-6 secondCol">
-                            <label for="description" class="form-label">N de Dependentes</label>
+                            <label for="description" class="form-label">Dependentes</label>
                             <select id="dependents01" type="text" class="form-control" placeholder="Page Name" required="">
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-12">
                             <row>
-                                <label for="description" class="form-label">Vencimento Base: </label> 
+                                <label for="description" class="form-label">Vencimento Base </label> 
                                 <input class="form-control" type="number" id="salaryInputLeft" value="900" min="0" step="1" />
                             </row>
                             <input id="salaryRangeLeft" class="form-range" type="range" value="900" step="20" min="760" max="10000">
@@ -68,9 +68,11 @@
                     <div class="col text-center">
                         <span id="salaryLeft" class="badge bg-primary fs-3 fixed-width-badge">2990</span>
                         <div class="my-2"></div>
-                        <span id="salaryRight" class="badge bg-success fs-3 fixed-width-badge">2000</span>
+                        <span id="salaryRight" class="badge bg-danger fs-3 fixed-width-badge">2000</span>
                         <div class="my-2"></div>
                         <span id="salaryDiff" class="badge bg-secondary fs-3 fixed-width-badge">990</span>
+                        <div class="my-2"></div>
+                        <span id="salaryNetDiff" class="badge bg-success fs-3 fixed-width-badge">990</span>
                     </div>
                 </div>
             
@@ -88,7 +90,7 @@
                             </select>
                         </div>
                         <div class="col-md-12 col-lg-6">
-                            <label for="description" class="form-label">N de Dependentes</label>
+                            <label for="description" class="form-label">Dependentes</label>
                             <select id="dependents02" type="text" class="form-control" placeholder="Page Name" required="">
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -100,7 +102,7 @@
                         </div>
                         <div class="col-12">
                             <row>
-                                <label for="description" class="form-label">Vencimento Base: </label> 
+                                <label for="description" class="form-label">Vencimento Base </label> 
                                 <input id="salaryInputRight" class="form-control" type="number"  value="900" min="0" step="1" />
                             </row>
                             <input id="salaryRangeRight" class="form-range" type="range" value="900" step="5" min="760" max="7000">
