@@ -88,10 +88,11 @@ function addSalaryInputListeners(input, range) {
     });
 }
 
-function copyValues(s1,d1,v1,s2,d2,v2) {
+function copyValues(s1,d1,v1,y1,s2,d2,v2,y2) {
   s2.value = s1.value;
   d2.value = d1.value;
   v2.value = v1.value;
+  y2.value = y1.value;
 };
 
 function addListeners() {
@@ -133,6 +134,14 @@ function addListeners() {
     calculation('right');
   });
 
+  yearLeft.addEventListener('change', function() {
+    calculation('left');
+  });
+
+  yearRight.addEventListener('change', function() {
+    calculation('right');
+  });
+
   salaryLeft.addEventListener('dblclick', function() {
   });
 
@@ -147,7 +156,9 @@ function addListeners() {
     const timeSinceLastTap = currentTime - lastTapTime;
     
     if (timeSinceLastTap < 300) { // Adjust the threshold as needed
-      copyValues(situationLeft, dependentsLeft, salaryInputLeft, situationRight, dependentsRight, salaryInputRight);
+      copyValues(
+          situationLeft, dependentsLeft, salaryInputLeft, yearLeft, 
+          situationRight, dependentsRight, salaryInputRight, yearRight);
       salaryInputRight.dispatchEvent(new Event('change'));
     }
     
@@ -160,7 +171,9 @@ function addListeners() {
     const timeSinceLastTap = currentTime - lastTapTime;
     
     if (timeSinceLastTap < 300) { // Adjust the threshold as needed
-      copyValues(situationRight, dependentsRight, salaryInputRight, situationLeft, dependentsLeft, salaryInputLeft);
+      copyValues(
+          situationRight, dependentsRight, salaryInputRight, yearRight,
+          situationLeft, dependentsLeft, salaryInputLeft, yearLeft);
       salaryInputLeft.dispatchEvent(new Event('change'));
     }
     
@@ -173,12 +186,14 @@ function calculation(position) {
     var salaryInput;
     var dependents;
     var salaryLabel;
+    var csvJson;
 
     if (position == 'left') {
       salaryInput = salaryInputLeft;
       rangeSalary = salaryRangeLeft;
       dependents = dependentsLeft;
       salaryLabel = salaryLeft;
+      csvJson = csvJsons[yearLeft.value]
     }
 
     if (position == 'right') {
@@ -186,6 +201,7 @@ function calculation(position) {
       rangeSalary = salaryRangeRight;
       dependents = dependentsRight;
       salaryLabel = salaryRight;
+      csvJson = csvJsons[yearRight.value]
     }
 
     var type = getType(position);
@@ -222,9 +238,9 @@ function calculation(position) {
     salaryNetDiff.innerHTML = Math.abs(parseFloat(salaryLeft.innerHTML) - parseFloat(salaryRight.innerHTML)).toFixed(2) 
 }
 
-function init() {
+function loadCSV(year) {
 
-  fetch("taxas_continente.csv")
+  fetch("taxas_continente_" + year +".csv")
     .then((response) => {
       return response.text();
     })
@@ -236,7 +252,7 @@ function init() {
       Papa.parse(csv, {
         header: true, // Treat the first row as headers
         complete: function (results) {
-          csvJson = results.data;
+          csvJsons[year] = results.data;
         },
         error: function (error) {
           console.error("Error parsing CSV:", error.message);
@@ -245,30 +261,33 @@ function init() {
 
       calculation('left');
       calculation('right');
+     
     })
     .catch((error) => {
       console.log(error);
     });
 }
 
-init();
+var csvJsons = [];
 
-var csv = null;
-var csvJson = null;
-
-var salaryRangeLeft = document.getElementById('salaryRangeLeft');
-var salaryInputLeft = document.getElementById('salaryInputLeft');
+loadCSV("2024");
+loadCSV("2023");
 
 var dependentsLeft = document.getElementById('dependents01');
 var situationLeft = document.getElementById('situation01');
 var salaryLeft = document.getElementById('salaryLeft');
+var yearLeft = document.getElementById('yearLeft');
+
+var salaryRangeLeft = document.getElementById('salaryRangeLeft');
+var salaryInputLeft = document.getElementById('salaryInputLeft');
+
+var dependentsRight = document.getElementById('dependents02');
+var situationRight = document.getElementById('situation02');
+var salaryRight = document.getElementById('salaryRight');
+var yearRight = document.getElementById('yearRight');
 
 var salaryRangeRight = document.getElementById('salaryRangeRight');
 var salaryInputRight = document.getElementById('salaryInputRight');
-
-var situationRight = document.getElementById('situation02');
-var dependentsRight = document.getElementById('dependents02');
-var salaryRight = document.getElementById('salaryRight');
 
 var salaryNetDiff = document.getElementById('salaryNetDiff');
 var salaryDiff = document.getElementById('salaryDiff');
