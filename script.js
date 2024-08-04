@@ -6,67 +6,80 @@ const Situation = {
   MarriedTwoTitulares: '2'
 }
 
-const Type = {
-  SOLD: {
-    value: "SOLD" , 
-    logic: notMarriedWithOneOrMoreDependents = (situation, dependentes) =>  
-    situation == Situation.NotMarried && dependentes >= 1 
-  },
-  SOLCAS2: {
-    value: "SOLCAS2",
-    logic: notMarriedOrMarriedTwoTitularesWithoutDependents = (situation, dependentes) =>
-      (situation == Situation.NotMarried || situation == Situation.MarriedTwoTitulares) && dependentes == 0
-  },
-  CAS2D: {
-    value: "CAS2D",
-    logic: marriedTwoTitularesWithOneOrMoreDependents = (situation, dependentes) =>
-    situation == Situation.MarriedTwoTitulares && dependentes >= 1
-  },
-  CAS1: {
-    value: "CAS1",
-    logic: marriedTwoTitularesWithoutDependents = (situation, dependentes) =>
-    situation == Situation.MarriedOneTitular && dependentes == 0
-  },
-  CAS1D: {
-    value: "CAS1D",
-    logic: marriedOneTitularWithOneOrMoreDependents = (situation, dependentes) =>
-    situation == Situation.MarriedOneTitular && dependentes >= 1
-  }
-}
-
 function getType(position) {
 
   var situation; 
   var dependents;
+  var year;
 
   if (position == 'left') {
     situation = situationLeft.value; 
-     dependents = parseInt(dependentsLeft.value);
+    dependents = parseInt(dependentsLeft.value);
+    year = yearLeft.value;
   }
 
   if (position == 'right') {
     situation = situationRight.value;
     dependents = parseInt(dependentsRight.value);
+    year = yearRight.value;
   }
 
-  if (Type.SOLD.logic(situation, dependents)) {
-    return Type.SOLD.value;
+  if (year == "2023") {
+
+    if (situation == Situation.NotMarried) {
+
+      // notMarriedOrMarriedTwoTitularesWithoutDependents
+      if (dependents == 0) {
+        return "SOLCAS2";
+      }
+
+      // notMarriedWithOneOrMoreDependents
+      return "SOLD";
+    }
+
+    if (situation == Situation.MarriedOneTitular) {
+
+      // marriedOneTitularWithoutDependents
+      if (dependents == 0) {
+        return "CAS1";
+      }
+      
+      // marriedOneTitularWithOneOrMoreDependents
+      return "CAS1D";
+    }
+
+    if (situation == Situation.MarriedTwoTitulares) {
+
+      // notMarriedOrMarriedTwoTitularesWithoutDependents
+      if (dependents == 0) {
+        return "SOLCAS2";
+      }
+      
+      // marriedTwoTitularesWithOneOrMoreDependents
+      return "CAS2D";
+    }
   }
 
-  if (Type.SOLCAS2.logic(situation, dependents)) {
-    return Type.SOLCAS2.value;
-  }
+  if (year == "2024") {
 
-  if (Type.CAS2D.logic(situation, dependents)) {
-    return Type.CAS2D.value;
-  }
+    if (situation == Situation.NotMarried) {
 
-  if (Type.CAS1.logic(situation, dependents)) {
-    return Type.CAS1.value;
-  }
+      // notMarriedOrMarriedTwoTitularesWithoutDependents
+      if (dependents == 0) {
+        return "SOLCAS2";
+      }
 
-  if (Type.CAS1D.logic(situation, dependents)) {
-    return Type.CAS1D.value;
+      // notMarriedWithOneOrMoreDependents
+      return "SOLD";
+    }
+
+    if (situation == Situation.MarriedOneTitular) {
+      return "CAS1";
+    }
+
+    if (situation == Situation.MarriedTwoTitulares) {
+      return "SOLCAS2";
+    }
   }
 }
 
@@ -268,7 +281,7 @@ function loadCSV(year) {
     });
 }
 
-var csvJsons = [];
+var csvJsons = {};
 
 loadCSV("2024");
 loadCSV("2023");
