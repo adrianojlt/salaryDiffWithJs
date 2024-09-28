@@ -60,7 +60,7 @@ function getType(position) {
     }
   }
 
-  if (year == "2024") {
+  if (year.startsWith("2024")) {
 
     if (situation == Situation.NotMarried) {
 
@@ -242,6 +242,8 @@ function calculation(position) {
     // Descontos IRS = Remuneração Mensal x Taxa Marginal Máxima - Parcela a Abater - Parcela adicional a abater por dependente
 
     var irsDiscount = ( parseFloat(salaryWithTax) - part - parseFloat(partAditional) );
+    if (irsDiscount < 0 ) irsDiscount = 0;
+
     var ssDiscont = parseFloat(salaryInput.value) * 0.11;
     var total = parseFloat(salaryInput.value) - (parseFloat(irsDiscount) + ssDiscont);
 
@@ -251,6 +253,8 @@ function calculation(position) {
     salaryNetDiff.innerHTML = Math.abs(parseFloat(salaryLeft.innerHTML) - parseFloat(salaryRight.innerHTML)).toFixed(2) 
 }
 
+// csv's download from here: 
+// https://www.doutorfinancas.pt/wp-content/themes/drfinancas/vendor/doutorfinancas/simulators/salario_liquido_2024/data_set_out2024/taxas_continente.csv
 function loadCSV(year) {
 
   fetch("taxas_continente_" + year +".csv")
@@ -283,6 +287,8 @@ function loadCSV(year) {
 
 var csvJsons = {};
 
+loadCSV("2024_03");
+loadCSV("2024_02");
 loadCSV("2024");
 loadCSV("2023");
 
