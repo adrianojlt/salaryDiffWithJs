@@ -60,7 +60,7 @@ function getType(position) {
     }
   }
 
-  if (year.startsWith("2024")) {
+  if (year.startsWith("2024") || year.startsWith("2025") ) {
 
     if (situation == Situation.NotMarried) {
 
@@ -255,6 +255,7 @@ function calculation(position) {
 
 // csv's download from here: 
 // https://www.doutorfinancas.pt/wp-content/themes/drfinancas/vendor/doutorfinancas/simulators/salario_liquido_2024/data_set_out2024/taxas_continente.csv
+// https://www.doutorfinancas.pt/wp-content/themes/drfinancas/vendor/doutorfinancas/simulators/salario_liquido_2025/data/taxas_continente.csv
 function loadCSV(year) {
 
   fetch("taxas_continente_" + year +".csv")
@@ -287,6 +288,7 @@ function loadCSV(year) {
 
 var csvJsons = {};
 
+loadCSV("2025");
 loadCSV("2024_03");
 loadCSV("2024_02");
 loadCSV("2024");
