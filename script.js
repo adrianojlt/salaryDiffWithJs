@@ -192,6 +192,30 @@ function addListeners() {
     
     lastTapTime = currentTime;
   });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const selects = ["situation01", "dependents01", "yearLeft", "salaryInputLeft", "salaryRangeLeft", "situation02", "dependents02", "yearRight", "salaryInputRight", "salaryRangeRight"];
+    const params = new URLSearchParams(window.location.search);
+
+    // Load values from URL
+    selects.forEach(id => {
+        const element = document.getElementById(id);
+        if (params.has(id)) {
+            element.value = params.get(id);
+        }
+
+        // Listen for changes to update the URL
+        element.addEventListener("change", updateURL);
+    });
+
+    function updateURL() {
+        const newParams = new URLSearchParams(window.location.search);
+        selects.forEach(id => {
+            newParams.set(id, document.getElementById(id).value);
+        });
+        history.pushState(null, "", `${window.location.pathname}?${newParams.toString()}`);
+    }
+});
 }
 
 function calculation(position) {
